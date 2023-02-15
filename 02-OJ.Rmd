@@ -21,6 +21,8 @@ The `OJ` data from the `ISLR` package contains 1070 purchases where the customer
 * `ListPriceDiff`: List price of MM less list price of CH
 * `STORE`: Which of 5 possible stores the sale occured at
 
+The question of interest is to predict which brand of orange juice a customer will purchase (`Purchase` variable).
+
 Source: Stine, Robert A., Foster, Dean P., Waterman, Richard P. Business Analysis Using Regression (1998). Published by Springer.
 
 To load the data, use
@@ -35,12 +37,12 @@ In `R`, categorical variables are sometimes recorded as numerical variables, whi
 
 **Task**
 
-(a) Use `str`, `summary` and/or `skim` to inspect the data. Looking at the variable description above, is there any categorical variable encoded incorrectly as numerical variable? If so, correct them by using `as.factor()`. 
+1. Use `str`, `summary` and/or `skim` to inspect the data. Looking at the variable description above, is there any categorical variable encoded incorrectly as numerical variable? If so, correct them by using `as.factor()`. 
 
 Excluding the response variable `Purchase`, how many variables are numerical variables and how many variables are categorical variables?
 
 * The number of numerical variables = `r fitb(12)`.
-* The number of numerical variables = `r fitb(5)`.
+* The number of categorical variables = `r fitb(5)`.
 
 ```{r, webex.hide="Solution"}
 library(skimr)
@@ -54,4 +56,60 @@ str(OJ)
 skim(OJ)
 ```
 
-(b) 
+2. Use `ggplot` or `ggpairs` to visualise numerical variables, answering questions such as which variables may be useful in predicting the type of orange juice purchased by the customer, any outlier/extreme observations.
+
+`r hide("Hint")`
+Check Lab 3 Sections 2.1 and 3.2 for examples. 
+`r unhide()`
+
+`r hide("Solution")`
+Below is an example code examining `PriceDiff` and `ListPriceDiff` using density plots and boxplots. 
+```{r}
+library(ggplot2)
+ggplot(OJ, aes(x=PriceDiff, colour=Purchase)) +
+  geom_density()
+ggplot(OJ, aes(x=PriceDiff, colour=Purchase)) +
+  geom_boxplot()
+library(GGally)
+ggpairs(OJ, columns=c(13,17), ggplot2::aes(colour=Purchase, alpha=0.2))
+```
+`r unhide()`
+
+3. Produce boxplots of categorical variables separated by groups. Check the helppage of `boxplot()` or use `geom_boxplot()` in `ggplot`. 
+
+`r hide("Solution")`
+Below is an example code examining `SpecialCH` using barchart. 
+```{r}
+ggplot(OJ, aes(x=SpecialCH, fill=Purchase)) +
+  geom_bar()
+```
+`r unhide()`
+
+## Effect of different parameters in SVM
+
+Before building a powerful SVM classifier, we illustrate the effect of different kernels and/or different parameters in SVM by working with only two numeric variables (hence we could visualise the decision boundary in 2D). 
+
+Suppose we select `PriceDiff` and `ListPriceDiff`. 
+```{r}
+library(e1071)
+Model_linear <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="linear")
+plot(Model_linear, OJ, ListPriceDiff~PriceDiff)
+```
+
+```{r}
+Model_poly <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=2)
+plot(Model_poly, OJ, ListPriceDiff~PriceDiff)
+```
+
+```{r}
+Model_poly2 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=5)
+plot(Model_poly2, OJ, ListPriceDiff~PriceDiff)
+```
+
+## Build an SVM
+
+```{r}
+sapply(OJ,is.numeric)
+```
+
+

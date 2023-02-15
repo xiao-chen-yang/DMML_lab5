@@ -3,3 +3,5 @@ welcome-to-dmml-lab-5
 support-vector-machines
 exercise-1-orange-juice-dataset
 exploratory-data-analysis
+effect-of-different-parameters-in-svm
+build-an-svm

@@ -139,6 +139,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2" data-path="exercise-1-orange-juice-dataset.html"><a href="exercise-1-orange-juice-dataset.html"><i class="fa fa-check"></i><b>2</b> Exercise 1: Orange juice dataset</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="exercise-1-orange-juice-dataset.html"><a href="exercise-1-orange-juice-dataset.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>2.1</b> Exploratory data analysis</a></li>
+<li class="chapter" data-level="2.2" data-path="exercise-1-orange-juice-dataset.html"><a href="exercise-1-orange-juice-dataset.html#effect-of-different-parameters-in-svm"><i class="fa fa-check"></i><b>2.2</b> Effect of different parameters in SVM</a></li>
+<li class="chapter" data-level="2.3" data-path="exercise-1-orange-juice-dataset.html"><a href="exercise-1-orange-juice-dataset.html#build-an-svm"><i class="fa fa-check"></i><b>2.3</b> Build an SVM</a></li>
 </ul></li>
 </ul>
 
@@ -180,6 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>ListPriceDiff</code>: List price of MM less list price of CH</li>
 <li><code>STORE</code>: Which of 5 possible stores the sale occured at</li>
 </ul>
+<p>The question of interest is to predict which brand of orange juice a customer will purchase (<code>Purchase</code> variable).</p>
 <p>Source: Stine, Robert A., Foster, Dean P., Waterman, Richard P. Business Analysis Using Regression (1998). Published by Springer.</p>
 <p>To load the data, use</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="exercise-1-orange-juice-dataset.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ISLR)</span>
@@ -188,13 +191,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">2.1</span> Exploratory data analysis<a href="exercise-1-orange-juice-dataset.html#exploratory-data-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In <code>R</code>, categorical variables are sometimes recorded as numerical variables, which is inappropriate for subsequent analysis. To address this, <code>as.factor()</code> should be used to convert these variables back into categorical variables.</p>
 <p><strong>Task</strong></p>
-<ol style="list-style-type: lower-alpha">
+<ol style="list-style-type: decimal">
 <li>Use <code>str</code>, <code>summary</code> and/or <code>skim</code> to inspect the data. Looking at the variable description above, is there any categorical variable encoded incorrectly as numerical variable? If so, correct them by using <code>as.factor()</code>.</li>
 </ol>
 <p>Excluding the response variable <code>Purchase</code>, how many variables are numerical variables and how many variables are categorical variables?</p>
 <ul>
 <li>The number of numerical variables = <input class='webex-solveme nospaces' size='2' data-answer='["12"]'/>.</li>
-<li>The number of numerical variables = <input class='webex-solveme nospaces' size='1' data-answer='["5"]'/>.</li>
+<li>The number of categorical variables = <input class='webex-solveme nospaces' size='1' data-answer='["5"]'/>.</li>
 </ul>
 <div class="webex-solution">
 <button>
@@ -1678,9 +1681,70 @@ ListPriceDiff
 </tbody>
 </table>
 </div>
-<ol start="2" style="list-style-type: lower-alpha">
-<li></li>
+<ol start="2" style="list-style-type: decimal">
+<li>Use <code>ggplot</code> or <code>ggpairs</code> to visualise numerical variables, answering questions such as which variables may be useful in predicting the type of orange juice purchased by the customer, any outlier/extreme observations.</li>
 </ol>
+<div class="webex-solution">
+<button>
+Hint
+</button>
+<p>Check Lab 3 Sections 2.1 and 3.2 for examples.</p>
+</div>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<p>Below is an example code examining <code>PriceDiff</code> and <code>ListPriceDiff</code> using density plots and boxplots.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="exercise-1-orange-juice-dataset.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb10-2"><a href="exercise-1-orange-juice-dataset.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(OJ, <span class="fu">aes</span>(<span class="at">x=</span>PriceDiff, <span class="at">colour=</span>Purchase)) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="exercise-1-orange-juice-dataset.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="exercise-1-orange-juice-dataset.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(OJ, <span class="fu">aes</span>(<span class="at">x=</span>PriceDiff, <span class="at">colour=</span>Purchase)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="exercise-1-orange-juice-dataset.html#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="exercise-1-orange-juice-dataset.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb12-2"><a href="exercise-1-orange-juice-dataset.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(OJ, <span class="at">columns=</span><span class="fu">c</span>(<span class="dv">13</span>,<span class="dv">17</span>), ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">colour=</span>Purchase, <span class="at">alpha=</span><span class="fl">0.2</span>))</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+</div>
+<ol start="3" style="list-style-type: decimal">
+<li>Produce boxplots of categorical variables separated by groups. Check the helppage of <code>boxplot()</code> or use <code>geom_boxplot()</code> in <code>ggplot</code>.</li>
+</ol>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<p>Below is an example code examining <code>SpecialCH</code> using barchart.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="exercise-1-orange-juice-dataset.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(OJ, <span class="fu">aes</span>(<span class="at">x=</span>SpecialCH, <span class="at">fill=</span>Purchase)) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="exercise-1-orange-juice-dataset.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+</div>
+<div id="effect-of-different-parameters-in-svm" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Effect of different parameters in SVM<a href="exercise-1-orange-juice-dataset.html#effect-of-different-parameters-in-svm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Before building a powerful SVM classifier, we illustrate the effect of different kernels and/or different parameters in SVM by working with only two numeric variables (hence we could visualise the decision boundary in 2D).</p>
+<p>Suppose we select <code>PriceDiff</code> and <code>ListPriceDiff</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="exercise-1-orange-juice-dataset.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
+<span id="cb14-2"><a href="exercise-1-orange-juice-dataset.html#cb14-2" aria-hidden="true" tabindex="-1"></a>Model_linear <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;linear&quot;</span>)</span>
+<span id="cb14-3"><a href="exercise-1-orange-juice-dataset.html#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_linear, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="exercise-1-orange-juice-dataset.html#cb15-1" aria-hidden="true" tabindex="-1"></a>Model_poly <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;poly&quot;</span>, <span class="at">degree=</span><span class="dv">2</span>)</span>
+<span id="cb15-2"><a href="exercise-1-orange-juice-dataset.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_poly, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="exercise-1-orange-juice-dataset.html#cb16-1" aria-hidden="true" tabindex="-1"></a>Model_poly2 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;poly&quot;</span>, <span class="at">degree=</span><span class="dv">5</span>)</span>
+<span id="cb16-2"><a href="exercise-1-orange-juice-dataset.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_poly2, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
+<p><img src="main_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="build-an-svm" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Build an SVM<a href="exercise-1-orange-juice-dataset.html#build-an-svm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="exercise-1-orange-juice-dataset.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(OJ,is.numeric)</span></code></pre></div>
+<pre><code>##       Purchase WeekofPurchase        StoreID        PriceCH        PriceMM 
+##          FALSE           TRUE          FALSE           TRUE           TRUE 
+##         DiscCH         DiscMM      SpecialCH      SpecialMM        LoyalCH 
+##           TRUE           TRUE          FALSE          FALSE           TRUE 
+##    SalePriceMM    SalePriceCH      PriceDiff         Store7      PctDiscMM 
+##           TRUE           TRUE           TRUE          FALSE           TRUE 
+##      PctDiscCH  ListPriceDiff          STORE 
+##           TRUE           TRUE          FALSE</code></pre>
 
 </div>
 </div>
