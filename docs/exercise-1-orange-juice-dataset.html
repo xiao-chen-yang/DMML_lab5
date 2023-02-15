@@ -1685,8 +1685,13 @@ ListPriceDiff
 </table>
 </div>
 <ol start="2" style="list-style-type: lower-alpha">
-<li>How many observations are there in the CH class and MM class</li>
+<li>How many observations are there in the CH class and MM class?</li>
 </ol>
+<ul>
+<li>The number of observations in the CH class = <input class='webex-solveme nospaces' size='3' data-answer='["653"]'/>.</li>
+<li>The number of observations in the MM class = <input class='webex-solveme nospaces' size='3' data-answer='["417"]'/>.</li>
+</ul>
+<p>The class distribution is not perfectly balanced, so we need to be more careful in selecting the evaluation measures later.</p>
 <ol start="2" style="list-style-type: decimal">
 <li>Use <code>ggplot</code> or <code>ggpairs</code> to visualise numerical variables, answering questions such as which variables may be useful in predicting the type of orange juice purchased by the customer, any outlier/extreme observations.</li>
 </ol>
@@ -1792,7 +1797,7 @@ Solution
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="exercise-1-orange-juice-dataset.html#cb21-1" aria-hidden="true" tabindex="-1"></a>Model_RBF <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">gamma=</span><span class="fl">0.1</span>)</span>
 <span id="cb21-2"><a href="exercise-1-orange-juice-dataset.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_RBF, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="exercise-1-orange-juice-dataset.html#cb22-1" aria-hidden="true" tabindex="-1"></a>Model_RBF2 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">degree=</span><span class="dv">10</span>)</span>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="exercise-1-orange-juice-dataset.html#cb22-1" aria-hidden="true" tabindex="-1"></a>Model_RBF2 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">gamma=</span><span class="dv">10</span>)</span>
 <span id="cb22-2"><a href="exercise-1-orange-juice-dataset.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_RBF2, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
 </div>
@@ -1812,12 +1817,17 @@ Solution
 <span id="cb23-2"><a href="exercise-1-orange-juice-dataset.html#cb23-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(OJ)</span>
 <span id="cb23-3"><a href="exercise-1-orange-juice-dataset.html#cb23-3" aria-hidden="true" tabindex="-1"></a>train.idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(n, <span class="fu">round</span>(n<span class="sc">*</span><span class="fl">0.75</span>))</span>
 <span id="cb23-4"><a href="exercise-1-orange-juice-dataset.html#cb23-4" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> OJ[train.idx,]</span>
-<span id="cb23-5"><a href="exercise-1-orange-juice-dataset.html#cb23-5" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> OJ[<span class="sc">-</span>train.idx]</span></code></pre></div>
+<span id="cb23-5"><a href="exercise-1-orange-juice-dataset.html#cb23-5" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> OJ[<span class="sc">-</span>train.idx,]</span></code></pre></div>
 </div>
 <p><br></p>
 <p>SVM is scale-invariant and therefore it is important to standardise the data first; here, standardisation is only applied to numerical variables.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="exercise-1-orange-juice-dataset.html#cb24-1" aria-hidden="true" tabindex="-1"></a>numerical_vars <span class="ot">&lt;-</span> <span class="fu">sapply</span>(OJ,is.numeric) <span class="co">#identify numerical variables</span></span>
-<span id="cb24-2"><a href="exercise-1-orange-juice-dataset.html#cb24-2" aria-hidden="true" tabindex="-1"></a>OJ[,numerical_vars] <span class="ot">&lt;-</span> <span class="fu">apply</span>(OJ[,numerical_vars],<span class="dv">2</span>,scale)</span></code></pre></div>
+<span id="cb24-2"><a href="exercise-1-orange-juice-dataset.html#cb24-2" aria-hidden="true" tabindex="-1"></a>var.mean <span class="ot">&lt;-</span> <span class="fu">apply</span>(train[,numerical_vars],<span class="dv">2</span>,mean) </span>
+<span id="cb24-3"><a href="exercise-1-orange-juice-dataset.html#cb24-3" aria-hidden="true" tabindex="-1"></a>var.sd   <span class="ot">&lt;-</span> <span class="fu">apply</span>(train[,numerical_vars],<span class="dv">2</span>,sd)</span>
+<span id="cb24-4"><a href="exercise-1-orange-juice-dataset.html#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="exercise-1-orange-juice-dataset.html#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># standardise training and test sets</span></span>
+<span id="cb24-6"><a href="exercise-1-orange-juice-dataset.html#cb24-6" aria-hidden="true" tabindex="-1"></a>train[,numerical_vars] <span class="ot">&lt;-</span><span class="fu">t</span>(<span class="fu">apply</span>(train[,numerical_vars], <span class="dv">1</span>, <span class="cf">function</span>(x) (x<span class="sc">-</span>var.mean)<span class="sc">/</span>var.sd))</span>
+<span id="cb24-7"><a href="exercise-1-orange-juice-dataset.html#cb24-7" aria-hidden="true" tabindex="-1"></a>test[,numerical_vars] <span class="ot">&lt;-</span><span class="fu">t</span>(<span class="fu">apply</span>(test[,numerical_vars], <span class="dv">1</span>, <span class="cf">function</span>(x) (x<span class="sc">-</span>var.mean)<span class="sc">/</span>var.sd))</span></code></pre></div>
 <p>Our initial exploratory analysis suggests that it is unlikely to separate the class by using a linear decision boundary. Therefore, we focus on polynomial kernel and RBF kernel for our subsequent analysis.</p>
 <ol start="9" style="list-style-type: decimal">
 <li>Use <code>tune</code> or <code>tune.svm</code> to select the optimal combinations of <code>cost</code> and <code>degree</code> for polynomial kernel and <code>cost</code> and <code>gamma</code> for the RBF kernel.</li>
@@ -1917,10 +1927,20 @@ Solution
 <ol start="10" style="list-style-type: decimal">
 <li>Build an SVM using the optimal kernel and parameters found in the above question and report the performance on test set.</li>
 </ol>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="exercise-1-orange-juice-dataset.html#cb29-1" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> SVM_RBF<span class="sc">$</span>best.parameters[<span class="dv">1</span>]</span>
-<span id="cb29-2"><a href="exercise-1-orange-juice-dataset.html#cb29-2" aria-hidden="true" tabindex="-1"></a>cost <span class="ot">&lt;-</span> SVM_RBF<span class="sc">$</span>best.parameters[<span class="dv">2</span>]</span>
-<span id="cb29-3"><a href="exercise-1-orange-juice-dataset.html#cb29-3" aria-hidden="true" tabindex="-1"></a>SVM_final <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">degree=</span><span class="dv">10</span>)</span>
-<span id="cb29-4"><a href="exercise-1-orange-juice-dataset.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(SVM_RBF)</span></span></code></pre></div>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="exercise-1-orange-juice-dataset.html#cb29-1" aria-hidden="true" tabindex="-1"></a>gamma.opt <span class="ot">&lt;-</span> SVM_RBF<span class="sc">$</span>best.parameters[<span class="dv">1</span>]</span>
+<span id="cb29-2"><a href="exercise-1-orange-juice-dataset.html#cb29-2" aria-hidden="true" tabindex="-1"></a>cost.opt <span class="ot">&lt;-</span> SVM_RBF<span class="sc">$</span>best.parameters[<span class="dv">2</span>]</span>
+<span id="cb29-3"><a href="exercise-1-orange-juice-dataset.html#cb29-3" aria-hidden="true" tabindex="-1"></a>SVM_final <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">gamma=</span>gamma.opt, <span class="at">cost=</span>cost.opt)</span>
+<span id="cb29-4"><a href="exercise-1-orange-juice-dataset.html#cb29-4" aria-hidden="true" tabindex="-1"></a>test.pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(SVM_final,test)</span>
+<span id="cb29-5"><a href="exercise-1-orange-juice-dataset.html#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(test<span class="sc">$</span>Purchase,test.pred)</span></code></pre></div>
+<pre><code>##     test.pred
+##       CH  MM
+##   CH 123  43
+##   MM  56  46</code></pre>
+</div>
 
 </div>
 </div>

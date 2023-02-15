@@ -60,7 +60,12 @@ skim(OJ)
 ```
 `r unhide()`
 
-(b) How many observations are there in the CH class and MM class
+(b) How many observations are there in the CH class and MM class?
+
+* The number of observations in the CH class = `r fitb(653)`.
+* The number of observations in the MM class = `r fitb(417)`.
+
+The class distribution is not perfectly balanced, so we need to be more careful in selecting the evaluation measures later.  
 
 2. Use `ggplot` or `ggpairs` to visualise numerical variables, answering questions such as which variables may be useful in predicting the type of orange juice purchased by the customer, any outlier/extreme observations.
 
@@ -166,14 +171,19 @@ set.seed(1)
 n <- nrow(OJ)
 train.idx <- sample(n, round(n*0.75))
 train <- OJ[train.idx,]
-test <- OJ[-train.idx]
+test <- OJ[-train.idx,]
 ```
 <br>
 
 SVM is scale-invariant and therefore it is important to standardise the data first; here, standardisation is only applied to numerical variables. 
 ```{r}
 numerical_vars <- sapply(OJ,is.numeric) #identify numerical variables
-OJ[,numerical_vars] <- apply(OJ[,numerical_vars],2,scale)
+var.mean <- apply(train[,numerical_vars],2,mean) 
+var.sd   <- apply(train[,numerical_vars],2,sd)
+
+# standardise training and test sets
+train[,numerical_vars] <-t(apply(train[,numerical_vars], 1, function(x) (x-var.mean)/var.sd))
+test[,numerical_vars] <-t(apply(test[,numerical_vars], 1, function(x) (x-var.mean)/var.sd))
 ```
 
 Our initial exploratory analysis suggests that it is unlikely to separate the class by using a linear decision boundary. Therefore, we focus on polynomial kernel and RBF kernel for our subsequent analysis. 
@@ -202,9 +212,14 @@ Based on the above `R` output, we see that the cross-validation error rate for S
 
 10. Build an SVM using the optimal kernel and parameters found in the above question and report the performance on test set. 
 
+`r hide("Solution")` 
+
 ```{r}
 gamma.opt <- SVM_RBF$best.parameters[1]
 cost.opt <- SVM_RBF$best.parameters[2]
 SVM_final <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="radial", gamma=gamma.opt, cost=cost.opt)
 test.pred <- predict(SVM_final,test)
+table(test$Purchase,test.pred)
 ```
+
+`r unhide()`
