@@ -1,0 +1,53 @@
+---
+title: "STATS5099 Data Mining and Machine Learning"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+biblio-style: apalike
+link-citations: yes
+---
+
+```{r setup, include = FALSE}
+library(webexercises)
+library(tinytex)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+knitr::opts_chunk$set(echo=TRUE, eval=TRUE, warning=FALSE, message=FALSE)
+
+library(rpart)
+library(rpart.plot)
+library(randomForest)
+options(digits=7)
+```
+
+
+```{r include=FALSE, echo=FALSE}
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+
+# Welcome to DMML Lab 5
+
+In week 5, we have studied support vector machines (SVMs) and more specifically, maximal margin classifier (hard-margin SVM with linear kernel), support vector classifier (soft-margin SVM with linear kernel) and nonlinear/kernelised SVM.
+
+## Support vector machines
+
+Before applying SVM, we need to take two important practical considerations into account. First, SVM, by design, is only applicable to binary-class classification problem. For multi-class problem, conversion to binary-class is essential by using either one versus one approach or one versus all approach. Secondly, SVM is not scale-invariant and therefore it is important to standardise the data as a pre-processing step. 
+
+SVM can be fitted by using the `svm` command from `e1071` package. An example is as follows. 
+```{r eval=FALSE}
+Model <- svm(Y~., data, type="C-classification", kernel="linear", cost=1)
+```
+
+Important arguments include `type="C-classification"` for specifying the task is a classification problem, `kernel` for specifying the kernel function in SVM, e.g. `linear`, `polynomial` and `radial` (for radial basis kernel), `cost` for specifying the cost parameter in case of a soft-margin SVM, and any additional parameters used in the kernel function. See the help page for more information. 
+
+To tune parameters in kernel functions, we could use either `tune.svm` or `tune`.
+```{r eval=FALSE}
+cost_range <- ... #specifying the range of parameters
+tune.svm(Y~., data, type="C-classification", kernel="linear", cost=cost_range)
+tune(svm, Y~., data, type="C-classification", kernel="linear", ranges=list(cost=cost_range))
+```
+

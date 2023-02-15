@@ -1,0 +1,57 @@
+# Exercise 1: Orange juice dataset
+
+The `OJ` data from the `ISLR` package contains 1070 purchases where the customer either purchased Citrus Hill or Minute Maid Orange Juice. A number of characteristics of the customer and product are recorded.
+
+* `Purchase`: A factor with levels CH and MM indicating whether the customer purchased Citrus Hill or Minute Maid Orange Juice (i.e. response/class)
+* `WeekofPurchase`: Week of purchase
+* `StoreID`: Store ID
+* `PriceCH`: Price charged for CH
+* `PriceMM`: Price charged for MM
+* `DiscCH`: Discount offered for CH
+* `DiscMM`: Discount offered for MM
+* `SpecialCH`: Indicator of special on CH
+* `SpecialMM`: Indicator of special on MM
+* `LoyalCH`: Customer brand loyalty for CH
+* `SalePriceMM`:Sale price for MM
+* `SalePriceCH`: Sale price for CH
+* `PriceDiff`: Sale price of MM less sale price of CH
+* `Store7`: A factor with levels No and Yes indicating whether the sale is at Store 7
+* `PctDiscMM`: Percentage discount for MM
+* `PctDiscCH`: Percentage discount for CH
+* `ListPriceDiff`: List price of MM less list price of CH
+* `STORE`: Which of 5 possible stores the sale occured at
+
+Source: Stine, Robert A., Foster, Dean P., Waterman, Richard P. Business Analysis Using Regression (1998). Published by Springer.
+
+To load the data, use
+```{r}
+library(ISLR)
+data(OJ)
+```
+
+## Exploratory data analysis
+
+In `R`, categorical variables are sometimes recorded as numerical variables, which is inappropriate for subsequent analysis. To address this, `as.factor()` should be used to convert these variables back into categorical variables. 
+
+**Task**
+
+(a) Use `str`, `summary` and/or `skim` to inspect the data. Looking at the variable description above, is there any categorical variable encoded incorrectly as numerical variable? If so, correct them by using `as.factor()`. 
+
+Excluding the response variable `Purchase`, how many variables are numerical variables and how many variables are categorical variables?
+
+* The number of numerical variables = `r fitb(12)`.
+* The number of numerical variables = `r fitb(5)`.
+
+```{r, webex.hide="Solution"}
+library(skimr)
+str(OJ)
+skim(OJ)
+OJ$StoreID <- as.factor(OJ$StoreID)
+OJ$SpecialCH <- as.factor(OJ$SpecialCH)
+OJ$SpecialMM <- as.factor(OJ$SpecialMM)
+OJ$STORE <- as.factor(OJ$STORE)
+str(OJ)
+skim(OJ)
+```
+
+(b) 
