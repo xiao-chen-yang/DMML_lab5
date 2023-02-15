@@ -44,6 +44,7 @@ Excluding the response variable `Purchase`, how many variables are numerical var
 * The number of numerical variables = `r fitb(12)`.
 * The number of categorical variables = `r fitb(5)`.
 
+
 ```{r, webex.hide="Solution"}
 library(skimr)
 str(OJ)
@@ -89,24 +90,67 @@ ggplot(OJ, aes(x=SpecialCH, fill=Purchase)) +
 
 Before building a powerful SVM classifier, we illustrate the effect of different kernels and/or different parameters in SVM by working with only two numeric variables (hence we could visualise the decision boundary in 2D). 
 
-Suppose we select `PriceDiff` and `ListPriceDiff`. 
-```{r}
+Suppose we select `PriceDiff` and `ListPriceDiff` as the predictor variables. 
+
+**Task**
+
+4. Build a support vector classifier, i.e. SVM with a linear kernel, and visualise the decision boundary. 
+```{r, webex.hide="Solution"}
 library(e1071)
 Model_linear <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="linear")
 plot(Model_linear, OJ, ListPriceDiff~PriceDiff)
 ```
 
-```{r}
+5. Build an SVM with a polynomial kernel with two different degrees (by using the argument `degree`) and two intercept coefficients (by using the argument `coef`). 
+
+The decision boundary will be `r mcq(c("less flexible", answer="more flexible"))` if the degree in the polynomial kernel is higher. 
+
+```{r, webex.hide="Solution"}
 Model_poly <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=2)
 plot(Model_poly, OJ, ListPriceDiff~PriceDiff)
+
+Model_poly2 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=4)
+plot(Model_poly2, OJ, ListPriceDiff~PriceDiff)
+
+Model_poly3 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=4, coef=2)
+plot(Model_poly3, OJ, ListPriceDiff~PriceDiff)
 ```
 
-```{r}
-Model_poly2 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=5)
-plot(Model_poly2, OJ, ListPriceDiff~PriceDiff)
+6. Now fix the degree and intercepts in the polynomial kernel and change the cost parameter for soft-margin SVM (by using the argument `cost`). Visualise the decision boundary for two different cost values.
+
+```{r, webex.hide="Solution"}
+Model_poly4 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=5, cost=0.01)
+plot(Model_poly4, OJ, ListPriceDiff~PriceDiff)
+
+Model_poly5 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=5, cost=10)
+plot(Model_poly5, OJ, ListPriceDiff~PriceDiff)
 ```
+
+
+<!-- Note that in `e1071` package, SVM is formulated using the dual optimisation problem (see the supplementary material on page 6 of Week 5 note). A consequence of this is that the cost parameter in `R` takes the opposite effect to the cost parameter $C$ taught in the lecture (i.e. the penalty assigned to slack variables). In other words, a small value of cost parameter in `R` corresponds to a large value of $C$ in the lecture note, and vice versa. We can check this by comparing the classification accuracy of SVMs built with different cost parameters. Intuitively, a large $C$ (i.e. a small cost in `R`) encourages the model to better fit the data and hence improve the accuracy, and this is indeed the case as shown in the `R` command below.  -->
+
+<!-- ```{r} -->
+<!-- Model_poly3 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=5, cost=0.01) -->
+<!-- mean(OJ$Purchase == predict(Model_poly3,OJ)) -->
+<!-- Model_poly4 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=5, cost=10) -->
+<!-- mean(OJ$Purchase == predict(Model_poly4,OJ)) -->
+<!-- ``` -->
+
+7. Build an SVM with a radial basis kernel with two different gamma values (using the argument `gamma`) and visualise the decision boundary. 
+
+The decision boundary will be `r mcq(c("less flexible", answer="more flexible"))` if gamma in the radial basis function kernel is larger. 
+```{r, webex.hide="Solution"}
+Model_RBF <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="radial", gamma=0.1)
+plot(Model_RBF, OJ, ListPriceDiff~PriceDiff)
+
+Model_RBF2 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="radial", degree=10)
+plot(Model_RBF2, OJ, ListPriceDiff~PriceDiff)
+```
+
 
 ## Build an SVM
+
+Now we start to build an SVMly build an SM
 
 ```{r}
 sapply(OJ,is.numeric)

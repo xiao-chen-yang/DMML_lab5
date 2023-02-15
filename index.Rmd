@@ -51,3 +51,9 @@ tune.svm(Y~., data, type="C-classification", kernel="linear", cost=cost_range)
 tune(svm, Y~., data, type="C-classification", kernel="linear", ranges=list(cost=cost_range))
 ```
 
+Once the classifier is built, we could use `predict()` to predict the class for future observations and `plot()` to visualise the decision boundary in 2D.
+```{r eval=FALSE}
+predict(Model, data)
+plot(Model, data, formula) #formula: specifying two dimensions for visualisation, e.g. variable A ~ variable B
+```
+

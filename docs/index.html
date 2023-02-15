@@ -175,6 +175,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a>cost_range <span class="ot">&lt;-</span> ... <span class="co">#specifying the range of parameters</span></span>
 <span id="cb2-2"><a href="index.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tune.svm</span>(Y<span class="sc">~</span>., data, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;linear&quot;</span>, <span class="at">cost=</span>cost_range)</span>
 <span id="cb2-3"><a href="index.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tune</span>(svm, Y<span class="sc">~</span>., data, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;linear&quot;</span>, <span class="at">ranges=</span><span class="fu">list</span>(<span class="at">cost=</span>cost_range))</span></code></pre></div>
+<p>Once the classifier is built, we could use <code>predict()</code> to predict the class for future observations and <code>plot()</code> to visualise the decision boundary in 2D.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(Model, data)</span>
+<span id="cb3-2"><a href="index.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model, data, formula) <span class="co">#formula: specifying two dimensions for visualisation, e.g. variable A ~ variable B</span></span></code></pre></div>
 
 </div>
 </div>
