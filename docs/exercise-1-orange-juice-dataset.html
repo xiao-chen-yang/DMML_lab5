@@ -192,7 +192,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In <code>R</code>, categorical variables are sometimes recorded as numerical variables, which is inappropriate for subsequent analysis. To address this, <code>as.factor()</code> should be used to convert these variables back into categorical variables.</p>
 <p><strong>Task</strong></p>
 <ol style="list-style-type: decimal">
-<li>Use <code>str</code>, <code>summary</code> and/or <code>skim</code> to inspect the data. Looking at the variable description above, is there any categorical variable encoded incorrectly as numerical variable? If so, correct them by using <code>as.factor()</code>.</li>
+<li>Use <code>str</code>, <code>summary</code> and/or <code>skim</code> to inspect the data.</li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>Looking at the variable description above, is there any categorical variable encoded incorrectly as numerical variable? If so, correct them by using <code>as.factor()</code>.</li>
 </ol>
 <p>Excluding the response variable <code>Purchase</code>, how many variables are numerical variables and how many variables are categorical variables?</p>
 <ul>
@@ -1681,6 +1684,9 @@ ListPriceDiff
 </tbody>
 </table>
 </div>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>How many observations are there in the CH class and MM class</li>
+</ol>
 <ol start="2" style="list-style-type: decimal">
 <li>Use <code>ggplot</code> or <code>ggpairs</code> to visualise numerical variables, answering questions such as which variables may be useful in predicting the type of orange juice purchased by the customer, any outlier/extreme observations.</li>
 </ol>
@@ -1707,7 +1713,7 @@ Solution
 <p><img src="main_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
 </div>
 <ol start="3" style="list-style-type: decimal">
-<li>Produce boxplots of categorical variables separated by groups. Check the helppage of <code>boxplot()</code> or use <code>geom_boxplot()</code> in <code>ggplot</code>.</li>
+<li>Produce barcharts of categorical variables separated by groups.</li>
 </ol>
 <div class="webex-solution">
 <button>
@@ -1744,13 +1750,13 @@ Solution
 <button>
 Solution
 </button>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="exercise-1-orange-juice-dataset.html#cb16-1" aria-hidden="true" tabindex="-1"></a>Model_poly <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;poly&quot;</span>, <span class="at">degree=</span><span class="dv">2</span>)</span>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="exercise-1-orange-juice-dataset.html#cb16-1" aria-hidden="true" tabindex="-1"></a>Model_poly <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">2</span>)</span>
 <span id="cb16-2"><a href="exercise-1-orange-juice-dataset.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_poly, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="exercise-1-orange-juice-dataset.html#cb17-1" aria-hidden="true" tabindex="-1"></a>Model_poly2 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;poly&quot;</span>, <span class="at">degree=</span><span class="dv">4</span>)</span>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="exercise-1-orange-juice-dataset.html#cb17-1" aria-hidden="true" tabindex="-1"></a>Model_poly2 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">4</span>)</span>
 <span id="cb17-2"><a href="exercise-1-orange-juice-dataset.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_poly2, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="exercise-1-orange-juice-dataset.html#cb18-1" aria-hidden="true" tabindex="-1"></a>Model_poly3 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;poly&quot;</span>, <span class="at">degree=</span><span class="dv">4</span>, <span class="at">coef=</span><span class="dv">2</span>)</span>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="exercise-1-orange-juice-dataset.html#cb18-1" aria-hidden="true" tabindex="-1"></a>Model_poly3 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">4</span>, <span class="at">coef=</span><span class="dv">2</span>)</span>
 <span id="cb18-2"><a href="exercise-1-orange-juice-dataset.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_poly3, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-12-3.png" width="672" /></p>
 </div>
@@ -1761,24 +1767,24 @@ Solution
 <button>
 Solution
 </button>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="exercise-1-orange-juice-dataset.html#cb19-1" aria-hidden="true" tabindex="-1"></a>Model_poly4 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;poly&quot;</span>, <span class="at">degree=</span><span class="dv">5</span>, <span class="at">cost=</span><span class="fl">0.01</span>)</span>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="exercise-1-orange-juice-dataset.html#cb19-1" aria-hidden="true" tabindex="-1"></a>Model_poly4 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">5</span>, <span class="at">cost=</span><span class="fl">0.01</span>)</span>
 <span id="cb19-2"><a href="exercise-1-orange-juice-dataset.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_poly4, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="exercise-1-orange-juice-dataset.html#cb20-1" aria-hidden="true" tabindex="-1"></a>Model_poly5 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;poly&quot;</span>, <span class="at">degree=</span><span class="dv">5</span>, <span class="at">cost=</span><span class="dv">10</span>)</span>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="exercise-1-orange-juice-dataset.html#cb20-1" aria-hidden="true" tabindex="-1"></a>Model_poly5 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">5</span>, <span class="at">cost=</span><span class="dv">10</span>)</span>
 <span id="cb20-2"><a href="exercise-1-orange-juice-dataset.html#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_poly5, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
 </div>
 <!-- Note that in `e1071` package, SVM is formulated using the dual optimisation problem (see the supplementary material on page 6 of Week 5 note). A consequence of this is that the cost parameter in `R` takes the opposite effect to the cost parameter $C$ taught in the lecture (i.e. the penalty assigned to slack variables). In other words, a small value of cost parameter in `R` corresponds to a large value of $C$ in the lecture note, and vice versa. We can check this by comparing the classification accuracy of SVMs built with different cost parameters. Intuitively, a large $C$ (i.e. a small cost in `R`) encourages the model to better fit the data and hence improve the accuracy, and this is indeed the case as shown in the `R` command below.  -->
 <!-- ```{r} -->
-<!-- Model_poly3 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=5, cost=0.01) -->
+<!-- Model_poly3 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="polynomial", degree=5, cost=0.01) -->
 <!-- mean(OJ$Purchase == predict(Model_poly3,OJ)) -->
-<!-- Model_poly4 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=5, cost=10) -->
+<!-- Model_poly4 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="polynomial", degree=5, cost=10) -->
 <!-- mean(OJ$Purchase == predict(Model_poly4,OJ)) -->
 <!-- ``` -->
 <ol start="7" style="list-style-type: decimal">
-<li>Build an SVM with a radial basis kernel with two different gamma values (using the argument <code>gamma</code>) and visualise the decision boundary.</li>
+<li>Build an SVM with a radial basis function (RBF) kernel with two different gamma values (using the argument <code>gamma</code>) and visualise the decision boundary.</li>
 </ol>
-<p>The decision boundary will be <select class='webex-select'><option value='blank'></option><option value=''>less flexible</option><option value='answer'>more flexible</option></select> if gamma in the radial basis function kernel is larger.</p>
+<p>The decision boundary will be <select class='webex-select'><option value='blank'></option><option value=''>less flexible</option><option value='answer'>more flexible</option></select> if gamma in the RBF kernel is larger.</p>
 <div class="webex-solution">
 <button>
 Solution
@@ -1793,16 +1799,128 @@ Solution
 </div>
 <div id="build-an-svm" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> Build an SVM<a href="exercise-1-orange-juice-dataset.html#build-an-svm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Now we could formally build an SM</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="exercise-1-orange-juice-dataset.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(OJ,is.numeric)</span></code></pre></div>
-<pre><code>##       Purchase WeekofPurchase        StoreID        PriceCH        PriceMM 
-##          FALSE           TRUE          FALSE           TRUE           TRUE 
-##         DiscCH         DiscMM      SpecialCH      SpecialMM        LoyalCH 
-##           TRUE           TRUE          FALSE          FALSE           TRUE 
-##    SalePriceMM    SalePriceCH      PriceDiff         Store7      PctDiscMM 
-##           TRUE           TRUE           TRUE          FALSE           TRUE 
-##      PctDiscCH  ListPriceDiff          STORE 
-##           TRUE           TRUE          FALSE</code></pre>
+<p>Now we start to build an SVM. The first step is to split the data into training and test sets for training and evaluating the classifier; the validation set is skipped here as we will use the default tuning method on the training set.</p>
+<p><strong>Task</strong></p>
+<ol start="8" style="list-style-type: decimal">
+<li>Split the dataset into 75% for training and 25% for testing.</li>
+</ol>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="exercise-1-orange-juice-dataset.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb23-2"><a href="exercise-1-orange-juice-dataset.html#cb23-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(OJ)</span>
+<span id="cb23-3"><a href="exercise-1-orange-juice-dataset.html#cb23-3" aria-hidden="true" tabindex="-1"></a>train.idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(n, <span class="fu">round</span>(n<span class="sc">*</span><span class="fl">0.75</span>))</span>
+<span id="cb23-4"><a href="exercise-1-orange-juice-dataset.html#cb23-4" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> OJ[train.idx,]</span>
+<span id="cb23-5"><a href="exercise-1-orange-juice-dataset.html#cb23-5" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> OJ[<span class="sc">-</span>train.idx]</span></code></pre></div>
+</div>
+<p><br></p>
+<p>SVM is scale-invariant and therefore it is important to standardise the data first; here, standardisation is only applied to numerical variables.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="exercise-1-orange-juice-dataset.html#cb24-1" aria-hidden="true" tabindex="-1"></a>numerical_vars <span class="ot">&lt;-</span> <span class="fu">sapply</span>(OJ,is.numeric) <span class="co">#identify numerical variables</span></span>
+<span id="cb24-2"><a href="exercise-1-orange-juice-dataset.html#cb24-2" aria-hidden="true" tabindex="-1"></a>OJ[,numerical_vars] <span class="ot">&lt;-</span> <span class="fu">apply</span>(OJ[,numerical_vars],<span class="dv">2</span>,scale)</span></code></pre></div>
+<p>Our initial exploratory analysis suggests that it is unlikely to separate the class by using a linear decision boundary. Therefore, we focus on polynomial kernel and RBF kernel for our subsequent analysis.</p>
+<ol start="9" style="list-style-type: decimal">
+<li>Use <code>tune</code> or <code>tune.svm</code> to select the optimal combinations of <code>cost</code> and <code>degree</code> for polynomial kernel and <code>cost</code> and <code>gamma</code> for the RBF kernel.</li>
+</ol>
+<div class="webex-solution">
+<button>
+Solution
+</button>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="exercise-1-orange-juice-dataset.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb25-2"><a href="exercise-1-orange-juice-dataset.html#cb25-2" aria-hidden="true" tabindex="-1"></a>cost_range <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.01</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">10</span>,<span class="dv">100</span>)</span>
+<span id="cb25-3"><a href="exercise-1-orange-juice-dataset.html#cb25-3" aria-hidden="true" tabindex="-1"></a>degree_range <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb25-4"><a href="exercise-1-orange-juice-dataset.html#cb25-4" aria-hidden="true" tabindex="-1"></a>gamma_range <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.001</span>,<span class="fl">0.01</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">10</span>,<span class="dv">100</span>)</span>
+<span id="cb25-5"><a href="exercise-1-orange-juice-dataset.html#cb25-5" aria-hidden="true" tabindex="-1"></a>SVM_poly <span class="ot">&lt;-</span> <span class="fu">tune.svm</span>(Purchase<span class="sc">~</span>., <span class="at">data=</span>train, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">cost=</span>cost_range, <span class="at">degree=</span>degree_range)</span>
+<span id="cb25-6"><a href="exercise-1-orange-juice-dataset.html#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(SVM_poly)</span></code></pre></div>
+<pre><code>## 
+## Parameter tuning of &#39;svm&#39;:
+## 
+## - sampling method: 10-fold cross validation 
+## 
+## - best parameters:
+##  degree cost
+##       2   10
+## 
+## - best performance: 0.1820525 
+## 
+## - Detailed performance results:
+##    degree  cost     error dispersion
+## 1       2 1e-02 0.3926852 0.05677485
+## 2       3 1e-02 0.3926852 0.05677485
+## 3       4 1e-02 0.3802469 0.05323575
+## 4       5 1e-02 0.3715432 0.05489188
+## 5       2 1e-01 0.3578241 0.05891847
+## 6       3 1e-01 0.3490586 0.05982537
+## 7       4 1e-01 0.3540741 0.06120994
+## 8       5 1e-01 0.3528549 0.06050438
+## 9       2 1e+00 0.2168827 0.05060192
+## 10      3 1e+00 0.2355864 0.04716656
+## 11      4 1e+00 0.2854321 0.06236839
+## 12      5 1e+00 0.3178858 0.06676980
+## 13      2 1e+01 0.1820525 0.04417697
+## 14      3 1e+01 0.1920525 0.03412687
+## 15      4 1e+01 0.2269136 0.04978096
+## 16      5 1e+01 0.2430864 0.04092613
+## 17      2 1e+02 0.1907562 0.04112418
+## 18      3 1e+02 0.1895988 0.03886508
+## 19      4 1e+02 0.2119599 0.03426569
+## 20      5 1e+02 0.2157099 0.03719672</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="exercise-1-orange-juice-dataset.html#cb27-1" aria-hidden="true" tabindex="-1"></a>SVM_RBF <span class="ot">&lt;-</span> <span class="fu">tune.svm</span>(Purchase<span class="sc">~</span>., <span class="at">data=</span>train, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">cost=</span>cost_range, <span class="at">gamma=</span>gamma_range)</span>
+<span id="cb27-2"><a href="exercise-1-orange-juice-dataset.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(SVM_RBF)</span></code></pre></div>
+<pre><code>## 
+## Parameter tuning of &#39;svm&#39;:
+## 
+## - sampling method: 10-fold cross validation 
+## 
+## - best parameters:
+##  gamma cost
+##  0.001   10
+## 
+## - best performance: 0.1745062 
+## 
+## - Detailed performance results:
+##    gamma  cost     error dispersion
+## 1  1e-03 1e-02 0.3927623 0.06349114
+## 2  1e-02 1e-02 0.3927623 0.06349114
+## 3  1e-01 1e-02 0.3927623 0.06349114
+## 4  1e+00 1e-02 0.3927623 0.06349114
+## 5  1e+01 1e-02 0.3927623 0.06349114
+## 6  1e+02 1e-02 0.3927623 0.06349114
+## 7  1e-03 1e-01 0.3927623 0.06349114
+## 8  1e-02 1e-01 0.2044599 0.04921463
+## 9  1e-01 1e-01 0.1919444 0.03952223
+## 10 1e+00 1e-01 0.3529012 0.06995612
+## 11 1e+01 1e-01 0.3927623 0.06349114
+## 12 1e+02 1e-01 0.3927623 0.06349114
+## 13 1e-03 1e+00 0.1895062 0.04389485
+## 14 1e-02 1e+00 0.1820216 0.04704146
+## 15 1e-01 1e+00 0.1870679 0.04500966
+## 16 1e+00 1e+00 0.2331173 0.03865659
+## 17 1e+01 1e+00 0.2617593 0.05374654
+## 18 1e+02 1e+00 0.3155247 0.03780232
+## 19 1e-03 1e+01 0.1745062 0.04930779
+## 20 1e-02 1e+01 0.1882407 0.05452198
+## 21 1e-01 1e+01 0.2119599 0.03810401
+## 22 1e+00 1e+01 0.2355556 0.05041878
+## 23 1e+01 1e+01 0.2805401 0.03810152
+## 24 1e+02 1e+01 0.3167901 0.03892098
+## 25 1e-03 1e+02 0.1807407 0.06071558
+## 26 1e-02 1e+02 0.1920216 0.04416859
+## 27 1e-01 1e+02 0.2169136 0.04579364
+## 28 1e+00 1e+02 0.2542747 0.04541986
+## 29 1e+01 1e+02 0.2867747 0.03358065
+## 30 1e+02 1e+02 0.3167901 0.03892098</code></pre>
+<p>The best optimal parameter for SVM with a polynomial kernel is using a degree of 2 and a cost parameter of 10, achieving the best performance of 0.1820525 (error rate from 10-fold cross-validation). The best optimal parameter for SVM with an RBF kernel is using gamma of 0.001 and a cost parameter of 10, achieving the best performance of 0.1745062; note that this gamma value is obtained at the minimum of the range and thus it is preferable to further reduce gamma and check if the performance can be further improved.</p>
+</div>
+<p><br></p>
+<p>Based on the above <code>R</code> output, we see that the cross-validation error rate for SVM using the RBF kernel is slightly better than using the polynomial kernel. Therefore we will proceed with RBF kernel.</p>
+<ol start="10" style="list-style-type: decimal">
+<li>Build an SVM using the optimal kernel and parameters found in the above question and report the performance on test set.</li>
+</ol>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="exercise-1-orange-juice-dataset.html#cb29-1" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> SVM_RBF<span class="sc">$</span>best.parameters[<span class="dv">1</span>]</span>
+<span id="cb29-2"><a href="exercise-1-orange-juice-dataset.html#cb29-2" aria-hidden="true" tabindex="-1"></a>cost <span class="ot">&lt;-</span> SVM_RBF<span class="sc">$</span>best.parameters[<span class="dv">2</span>]</span>
+<span id="cb29-3"><a href="exercise-1-orange-juice-dataset.html#cb29-3" aria-hidden="true" tabindex="-1"></a>SVM_final <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">degree=</span><span class="dv">10</span>)</span>
+<span id="cb29-4"><a href="exercise-1-orange-juice-dataset.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(SVM_RBF)</span></span></code></pre></div>
 
 </div>
 </div>

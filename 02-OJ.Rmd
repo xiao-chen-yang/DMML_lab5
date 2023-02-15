@@ -37,15 +37,17 @@ In `R`, categorical variables are sometimes recorded as numerical variables, whi
 
 **Task**
 
-1. Use `str`, `summary` and/or `skim` to inspect the data. Looking at the variable description above, is there any categorical variable encoded incorrectly as numerical variable? If so, correct them by using `as.factor()`. 
+1. Use `str`, `summary` and/or `skim` to inspect the data. 
+
+(a) Looking at the variable description above, is there any categorical variable encoded incorrectly as numerical variable? If so, correct them by using `as.factor()`. 
 
 Excluding the response variable `Purchase`, how many variables are numerical variables and how many variables are categorical variables?
 
 * The number of numerical variables = `r fitb(12)`.
 * The number of categorical variables = `r fitb(5)`.
 
-
-```{r, webex.hide="Solution"}
+`r hide("Solution")`
+```{r}
 library(skimr)
 str(OJ)
 skim(OJ)
@@ -56,6 +58,9 @@ OJ$STORE <- as.factor(OJ$STORE)
 str(OJ)
 skim(OJ)
 ```
+`r unhide()`
+
+(b) How many observations are there in the CH class and MM class
 
 2. Use `ggplot` or `ggpairs` to visualise numerical variables, answering questions such as which variables may be useful in predicting the type of orange juice purchased by the customer, any outlier/extreme observations.
 
@@ -76,7 +81,7 @@ ggpairs(OJ, columns=c(13,17), ggplot2::aes(colour=Purchase, alpha=0.2))
 ```
 `r unhide()`
 
-3. Produce boxplots of categorical variables separated by groups. Check the helppage of `boxplot()` or use `geom_boxplot()` in `ggplot`. 
+3. Produce barcharts of categorical variables separated by groups. 
 
 `r hide("Solution")`
 Below is an example code examining `SpecialCH` using barchart. 
@@ -106,23 +111,23 @@ plot(Model_linear, OJ, ListPriceDiff~PriceDiff)
 The decision boundary will be `r mcq(c("less flexible", answer="more flexible"))` if the degree in the polynomial kernel is higher. 
 
 ```{r, webex.hide="Solution"}
-Model_poly <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=2)
+Model_poly <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="polynomial", degree=2)
 plot(Model_poly, OJ, ListPriceDiff~PriceDiff)
 
-Model_poly2 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=4)
+Model_poly2 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="polynomial", degree=4)
 plot(Model_poly2, OJ, ListPriceDiff~PriceDiff)
 
-Model_poly3 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=4, coef=2)
+Model_poly3 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="polynomial", degree=4, coef=2)
 plot(Model_poly3, OJ, ListPriceDiff~PriceDiff)
 ```
 
 6. Now fix the degree and intercepts in the polynomial kernel and change the cost parameter for soft-margin SVM (by using the argument `cost`). Visualise the decision boundary for two different cost values.
 
 ```{r, webex.hide="Solution"}
-Model_poly4 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=5, cost=0.01)
+Model_poly4 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="polynomial", degree=5, cost=0.01)
 plot(Model_poly4, OJ, ListPriceDiff~PriceDiff)
 
-Model_poly5 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=5, cost=10)
+Model_poly5 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="polynomial", degree=5, cost=10)
 plot(Model_poly5, OJ, ListPriceDiff~PriceDiff)
 ```
 
@@ -130,30 +135,76 @@ plot(Model_poly5, OJ, ListPriceDiff~PriceDiff)
 <!-- Note that in `e1071` package, SVM is formulated using the dual optimisation problem (see the supplementary material on page 6 of Week 5 note). A consequence of this is that the cost parameter in `R` takes the opposite effect to the cost parameter $C$ taught in the lecture (i.e. the penalty assigned to slack variables). In other words, a small value of cost parameter in `R` corresponds to a large value of $C$ in the lecture note, and vice versa. We can check this by comparing the classification accuracy of SVMs built with different cost parameters. Intuitively, a large $C$ (i.e. a small cost in `R`) encourages the model to better fit the data and hence improve the accuracy, and this is indeed the case as shown in the `R` command below.  -->
 
 <!-- ```{r} -->
-<!-- Model_poly3 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=5, cost=0.01) -->
+<!-- Model_poly3 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="polynomial", degree=5, cost=0.01) -->
 <!-- mean(OJ$Purchase == predict(Model_poly3,OJ)) -->
-<!-- Model_poly4 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="poly", degree=5, cost=10) -->
+<!-- Model_poly4 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="polynomial", degree=5, cost=10) -->
 <!-- mean(OJ$Purchase == predict(Model_poly4,OJ)) -->
 <!-- ``` -->
 
-7. Build an SVM with a radial basis kernel with two different gamma values (using the argument `gamma`) and visualise the decision boundary. 
+7. Build an SVM with a radial basis function (RBF) kernel with two different gamma values (using the argument `gamma`) and visualise the decision boundary. 
 
-The decision boundary will be `r mcq(c("less flexible", answer="more flexible"))` if gamma in the radial basis function kernel is larger. 
+The decision boundary will be `r mcq(c("less flexible", answer="more flexible"))` if gamma in the RBF kernel is larger. 
 ```{r, webex.hide="Solution"}
 Model_RBF <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="radial", gamma=0.1)
 plot(Model_RBF, OJ, ListPriceDiff~PriceDiff)
 
-Model_RBF2 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="radial", degree=10)
+Model_RBF2 <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="radial", gamma=10)
 plot(Model_RBF2, OJ, ListPriceDiff~PriceDiff)
 ```
 
 
 ## Build an SVM
 
-Now we start to build an SVMly build an SM
+Now we start to build an SVM. The first step is to split the data into training and test sets for training and evaluating the classifier; the validation set is skipped here as we will use the default tuning method on the training set. 
 
+**Task**
+
+8. Split the dataset into 75% for training and 25% for testing. 
+
+```{r, webex.hide="Solution"}
+set.seed(1)
+n <- nrow(OJ)
+train.idx <- sample(n, round(n*0.75))
+train <- OJ[train.idx,]
+test <- OJ[-train.idx]
+```
+<br>
+
+SVM is scale-invariant and therefore it is important to standardise the data first; here, standardisation is only applied to numerical variables. 
 ```{r}
-sapply(OJ,is.numeric)
+numerical_vars <- sapply(OJ,is.numeric) #identify numerical variables
+OJ[,numerical_vars] <- apply(OJ[,numerical_vars],2,scale)
 ```
 
+Our initial exploratory analysis suggests that it is unlikely to separate the class by using a linear decision boundary. Therefore, we focus on polynomial kernel and RBF kernel for our subsequent analysis. 
 
+9. Use `tune` or `tune.svm` to select the optimal combinations of `cost` and `degree` for polynomial kernel and `cost` and `gamma` for the RBF kernel.
+
+`r hide("Solution")`
+```{r}
+set.seed(1)
+cost_range <- c(0.01,0.1,1,10,100)
+degree_range <- 2:5
+gamma_range <- c(0.001,0.01,0.1,1,10,100)
+SVM_poly <- tune.svm(Purchase~., data=train, type="C-classification", kernel="polynomial", cost=cost_range, degree=degree_range)
+summary(SVM_poly)
+SVM_RBF <- tune.svm(Purchase~., data=train, type="C-classification", kernel="radial", cost=cost_range, gamma=gamma_range)
+summary(SVM_RBF)
+```
+
+The best optimal parameter for SVM with a polynomial kernel is using a degree of 2 and a cost parameter of 10, achieving the best performance of 0.1820525 (error rate from 10-fold cross-validation). The best optimal parameter for SVM with an RBF kernel is using gamma of 0.001 and a cost parameter of 10, achieving the best performance of 0.1745062; note that this gamma value is obtained at the minimum of the range and thus it is preferable to further reduce gamma and check if the performance can be further improved. 
+
+`r unhide()`
+
+<br>
+
+Based on the above `R` output, we see that the cross-validation error rate for SVM using the RBF kernel is slightly better than using the polynomial kernel. Therefore we will proceed with RBF kernel. 
+
+10. Build an SVM using the optimal kernel and parameters found in the above question and report the performance on test set. 
+
+```{r}
+gamma.opt <- SVM_RBF$best.parameters[1]
+cost.opt <- SVM_RBF$best.parameters[2]
+SVM_final <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="radial", gamma=gamma.opt, cost=cost.opt)
+test.pred <- predict(SVM_final,test)
+```

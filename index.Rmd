@@ -47,7 +47,7 @@ Important arguments include `type="C-classification"` for specifying the task is
 To tune parameters in kernel functions, we could use either `tune.svm` or `tune`.
 ```{r eval=FALSE}
 cost_range <- ... #specifying the range of parameters
-tune.svm(Y~., data, type="C-classification", kernel="linear", cost=cost_range)
+tune.svm(Y~., data=..., type="C-classification", kernel="linear", cost=cost_range)
 tune(svm, Y~., data, type="C-classification", kernel="linear", ranges=list(cost=cost_range))
 ```
 
