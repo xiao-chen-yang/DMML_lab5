@@ -105,11 +105,15 @@ Suppose we select `PriceDiff` and `ListPriceDiff` as the predictor variables.
 **Task**
 
 4. Build a support vector classifier, i.e. SVM with a linear kernel, and visualise the decision boundary. 
-```{r, webex.hide="Solution"}
+`r hide("Solution")`
+```{r}
 library(e1071)
 Model_linear <- svm(Purchase~PriceDiff+ListPriceDiff, OJ, type="C-classification", kernel="linear")
 plot(Model_linear, OJ, ListPriceDiff~PriceDiff)
 ```
+
+By default, the support vectors are indicated by cross and other data points are indicated by circle. The symbols can be changed by using arguments `svSymbol` and `dataSymbol`. More details can be found on the help page of `plot.svm`.
+`r unhide()`
 
 5. Build an SVM with a polynomial kernel with two different degrees (by using the argument `degree`) and two intercept coefficients (by using the argument `coef`). 
 
@@ -222,4 +226,5 @@ test.pred <- predict(SVM_final,test)
 table(test$Purchase,test.pred)
 ```
 
+Based on the cross-tabulation table, we can calculate various evaluation measures, such as class-specific correct classification rate, specificity and sensitivity, AUC. Recall that this dataset is slightly imbalanced, and therefore, it is not very appropriate to comment on accuracy only. 
 `r unhide()`

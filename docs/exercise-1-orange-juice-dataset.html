@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Exercise 1: Orange juice dataset | STATS5099 Data Mining and Machine Learning</title>
   <meta name="description" content="2 Exercise 1: Orange juice dataset | STATS5099 Data Mining and Machine Learning" />
-  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Exercise 1: Orange juice dataset | STATS5099 Data Mining and Machine Learning" />
   <meta property="og:type" content="book" />
@@ -117,6 +117,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 <link rel="stylesheet" href="include/webex.css" type="text/css" />
@@ -185,8 +189,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The question of interest is to predict which brand of orange juice a customer will purchase (<code>Purchase</code> variable).</p>
 <p>Source: Stine, Robert A., Foster, Dean P., Waterman, Richard P. Business Analysis Using Regression (1998). Published by Springer.</p>
 <p>To load the data, use</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="exercise-1-orange-juice-dataset.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ISLR)</span>
-<span id="cb4-2"><a href="exercise-1-orange-juice-dataset.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(OJ)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="exercise-1-orange-juice-dataset.html#cb4-1" tabindex="-1"></a><span class="fu">library</span>(ISLR)</span>
+<span id="cb4-2"><a href="exercise-1-orange-juice-dataset.html#cb4-2" tabindex="-1"></a><span class="fu">data</span>(OJ)</span></code></pre></div>
 <div id="exploratory-data-analysis" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Exploratory data analysis<a href="exercise-1-orange-juice-dataset.html#exploratory-data-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In <code>R</code>, categorical variables are sometimes recorded as numerical variables, which is inappropriate for subsequent analysis. To address this, <code>as.factor()</code> should be used to convert these variables back into categorical variables.</p>
@@ -206,8 +210,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <button>
 Solution
 </button>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="exercise-1-orange-juice-dataset.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
-<span id="cb5-2"><a href="exercise-1-orange-juice-dataset.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(OJ)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="exercise-1-orange-juice-dataset.html#cb5-1" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb5-2"><a href="exercise-1-orange-juice-dataset.html#cb5-2" tabindex="-1"></a><span class="fu">str</span>(OJ)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    1070 obs. of  18 variables:
 ##  $ Purchase      : Factor w/ 2 levels &quot;CH&quot;,&quot;MM&quot;: 1 1 1 2 1 1 1 1 1 1 ...
 ##  $ WeekofPurchase: num  237 239 245 227 228 230 232 234 235 238 ...
@@ -227,7 +231,7 @@ Solution
 ##  $ PctDiscCH     : num  0 0 0.0914 0 0 ...
 ##  $ ListPriceDiff : num  0.24 0.24 0.23 0 0 0.3 0.3 0.24 0.24 0.24 ...
 ##  $ STORE         : num  1 1 1 1 0 0 0 0 0 0 ...</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="exercise-1-orange-juice-dataset.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(OJ)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="exercise-1-orange-juice-dataset.html#cb7-1" tabindex="-1"></a><span class="fu">skim</span>(OJ)</span></code></pre></div>
 <table style="width: auto;" class="table table-condensed">
 <caption>
 <span id="tab:unnamed-chunk-8">Table 2.1: </span>Data summary
@@ -973,11 +977,11 @@ STORE
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="exercise-1-orange-juice-dataset.html#cb8-1" aria-hidden="true" tabindex="-1"></a>OJ<span class="sc">$</span>StoreID <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(OJ<span class="sc">$</span>StoreID)</span>
-<span id="cb8-2"><a href="exercise-1-orange-juice-dataset.html#cb8-2" aria-hidden="true" tabindex="-1"></a>OJ<span class="sc">$</span>SpecialCH <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(OJ<span class="sc">$</span>SpecialCH)</span>
-<span id="cb8-3"><a href="exercise-1-orange-juice-dataset.html#cb8-3" aria-hidden="true" tabindex="-1"></a>OJ<span class="sc">$</span>SpecialMM <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(OJ<span class="sc">$</span>SpecialMM)</span>
-<span id="cb8-4"><a href="exercise-1-orange-juice-dataset.html#cb8-4" aria-hidden="true" tabindex="-1"></a>OJ<span class="sc">$</span>STORE <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(OJ<span class="sc">$</span>STORE)</span>
-<span id="cb8-5"><a href="exercise-1-orange-juice-dataset.html#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(OJ)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="exercise-1-orange-juice-dataset.html#cb8-1" tabindex="-1"></a>OJ<span class="sc">$</span>StoreID <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(OJ<span class="sc">$</span>StoreID)</span>
+<span id="cb8-2"><a href="exercise-1-orange-juice-dataset.html#cb8-2" tabindex="-1"></a>OJ<span class="sc">$</span>SpecialCH <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(OJ<span class="sc">$</span>SpecialCH)</span>
+<span id="cb8-3"><a href="exercise-1-orange-juice-dataset.html#cb8-3" tabindex="-1"></a>OJ<span class="sc">$</span>SpecialMM <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(OJ<span class="sc">$</span>SpecialMM)</span>
+<span id="cb8-4"><a href="exercise-1-orange-juice-dataset.html#cb8-4" tabindex="-1"></a>OJ<span class="sc">$</span>STORE <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(OJ<span class="sc">$</span>STORE)</span>
+<span id="cb8-5"><a href="exercise-1-orange-juice-dataset.html#cb8-5" tabindex="-1"></a><span class="fu">str</span>(OJ)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    1070 obs. of  18 variables:
 ##  $ Purchase      : Factor w/ 2 levels &quot;CH&quot;,&quot;MM&quot;: 1 1 1 2 1 1 1 1 1 1 ...
 ##  $ WeekofPurchase: num  237 239 245 227 228 230 232 234 235 238 ...
@@ -997,7 +1001,7 @@ STORE
 ##  $ PctDiscCH     : num  0 0 0.0914 0 0 ...
 ##  $ ListPriceDiff : num  0.24 0.24 0.23 0 0 0.3 0.3 0.24 0.24 0.24 ...
 ##  $ STORE         : Factor w/ 5 levels &quot;0&quot;,&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,..: 2 2 2 2 1 1 1 1 1 1 ...</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="exercise-1-orange-juice-dataset.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(OJ)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="exercise-1-orange-juice-dataset.html#cb10-1" tabindex="-1"></a><span class="fu">skim</span>(OJ)</span></code></pre></div>
 <table style="width: auto;" class="table table-condensed">
 <caption>
 <span id="tab:unnamed-chunk-8">Table 2.1: </span>Data summary
@@ -1706,15 +1710,15 @@ Hint
 Solution
 </button>
 <p>Below is an example code examining <code>PriceDiff</code> and <code>ListPriceDiff</code> using density plots and boxplots.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="exercise-1-orange-juice-dataset.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb11-2"><a href="exercise-1-orange-juice-dataset.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(OJ, <span class="fu">aes</span>(<span class="at">x=</span>PriceDiff, <span class="at">colour=</span>Purchase)) <span class="sc">+</span></span>
-<span id="cb11-3"><a href="exercise-1-orange-juice-dataset.html#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="exercise-1-orange-juice-dataset.html#cb11-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb11-2"><a href="exercise-1-orange-juice-dataset.html#cb11-2" tabindex="-1"></a><span class="fu">ggplot</span>(OJ, <span class="fu">aes</span>(<span class="at">x=</span>PriceDiff, <span class="at">colour=</span>Purchase)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="exercise-1-orange-juice-dataset.html#cb11-3" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="exercise-1-orange-juice-dataset.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(OJ, <span class="fu">aes</span>(<span class="at">x=</span>PriceDiff, <span class="at">colour=</span>Purchase)) <span class="sc">+</span></span>
-<span id="cb12-2"><a href="exercise-1-orange-juice-dataset.html#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="exercise-1-orange-juice-dataset.html#cb12-1" tabindex="-1"></a><span class="fu">ggplot</span>(OJ, <span class="fu">aes</span>(<span class="at">x=</span>PriceDiff, <span class="at">colour=</span>Purchase)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="exercise-1-orange-juice-dataset.html#cb12-2" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="exercise-1-orange-juice-dataset.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb13-2"><a href="exercise-1-orange-juice-dataset.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(OJ, <span class="at">columns=</span><span class="fu">c</span>(<span class="dv">13</span>,<span class="dv">17</span>), ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">colour=</span>Purchase, <span class="at">alpha=</span><span class="fl">0.2</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="exercise-1-orange-juice-dataset.html#cb13-1" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb13-2"><a href="exercise-1-orange-juice-dataset.html#cb13-2" tabindex="-1"></a><span class="fu">ggpairs</span>(OJ, <span class="at">columns=</span><span class="fu">c</span>(<span class="dv">13</span>,<span class="dv">17</span>), ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">colour=</span>Purchase, <span class="at">alpha=</span><span class="fl">0.2</span>))</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
 </div>
 <ol start="3" style="list-style-type: decimal">
@@ -1725,8 +1729,8 @@ Solution
 Solution
 </button>
 <p>Below is an example code examining <code>SpecialCH</code> using barchart.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="exercise-1-orange-juice-dataset.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(OJ, <span class="fu">aes</span>(<span class="at">x=</span>SpecialCH, <span class="at">fill=</span>Purchase)) <span class="sc">+</span></span>
-<span id="cb14-2"><a href="exercise-1-orange-juice-dataset.html#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="exercise-1-orange-juice-dataset.html#cb14-1" tabindex="-1"></a><span class="fu">ggplot</span>(OJ, <span class="fu">aes</span>(<span class="at">x=</span>SpecialCH, <span class="at">fill=</span>Purchase)) <span class="sc">+</span></span>
+<span id="cb14-2"><a href="exercise-1-orange-juice-dataset.html#cb14-2" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 </div>
@@ -1742,10 +1746,11 @@ Solution
 <button>
 Solution
 </button>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="exercise-1-orange-juice-dataset.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
-<span id="cb15-2"><a href="exercise-1-orange-juice-dataset.html#cb15-2" aria-hidden="true" tabindex="-1"></a>Model_linear <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;linear&quot;</span>)</span>
-<span id="cb15-3"><a href="exercise-1-orange-juice-dataset.html#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_linear, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="exercise-1-orange-juice-dataset.html#cb15-1" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
+<span id="cb15-2"><a href="exercise-1-orange-juice-dataset.html#cb15-2" tabindex="-1"></a>Model_linear <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;linear&quot;</span>)</span>
+<span id="cb15-3"><a href="exercise-1-orange-juice-dataset.html#cb15-3" tabindex="-1"></a><span class="fu">plot</span>(Model_linear, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>By default, the support vectors are indicated by cross and other data points are indicated by circle. The symbols can be changed by using arguments <code>svSymbol</code> and <code>dataSymbol</code>. More details can be found on the help page of <code>plot.svm</code>.</p>
 </div>
 <ol start="5" style="list-style-type: decimal">
 <li>Build an SVM with a polynomial kernel with two different degrees (by using the argument <code>degree</code>) and two intercept coefficients (by using the argument <code>coef</code>).</li>
@@ -1755,14 +1760,14 @@ Solution
 <button>
 Solution
 </button>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="exercise-1-orange-juice-dataset.html#cb16-1" aria-hidden="true" tabindex="-1"></a>Model_poly <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">2</span>)</span>
-<span id="cb16-2"><a href="exercise-1-orange-juice-dataset.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_poly, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="exercise-1-orange-juice-dataset.html#cb16-1" tabindex="-1"></a>Model_poly <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">2</span>)</span>
+<span id="cb16-2"><a href="exercise-1-orange-juice-dataset.html#cb16-2" tabindex="-1"></a><span class="fu">plot</span>(Model_poly, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="exercise-1-orange-juice-dataset.html#cb17-1" aria-hidden="true" tabindex="-1"></a>Model_poly2 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">4</span>)</span>
-<span id="cb17-2"><a href="exercise-1-orange-juice-dataset.html#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_poly2, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="exercise-1-orange-juice-dataset.html#cb17-1" tabindex="-1"></a>Model_poly2 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">4</span>)</span>
+<span id="cb17-2"><a href="exercise-1-orange-juice-dataset.html#cb17-2" tabindex="-1"></a><span class="fu">plot</span>(Model_poly2, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="exercise-1-orange-juice-dataset.html#cb18-1" aria-hidden="true" tabindex="-1"></a>Model_poly3 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">4</span>, <span class="at">coef=</span><span class="dv">2</span>)</span>
-<span id="cb18-2"><a href="exercise-1-orange-juice-dataset.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_poly3, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="exercise-1-orange-juice-dataset.html#cb18-1" tabindex="-1"></a>Model_poly3 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">4</span>, <span class="at">coef=</span><span class="dv">2</span>)</span>
+<span id="cb18-2"><a href="exercise-1-orange-juice-dataset.html#cb18-2" tabindex="-1"></a><span class="fu">plot</span>(Model_poly3, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-12-3.png" width="672" /></p>
 </div>
 <ol start="6" style="list-style-type: decimal">
@@ -1772,11 +1777,11 @@ Solution
 <button>
 Solution
 </button>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="exercise-1-orange-juice-dataset.html#cb19-1" aria-hidden="true" tabindex="-1"></a>Model_poly4 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">5</span>, <span class="at">cost=</span><span class="fl">0.01</span>)</span>
-<span id="cb19-2"><a href="exercise-1-orange-juice-dataset.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_poly4, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="exercise-1-orange-juice-dataset.html#cb19-1" tabindex="-1"></a>Model_poly4 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">5</span>, <span class="at">cost=</span><span class="fl">0.01</span>)</span>
+<span id="cb19-2"><a href="exercise-1-orange-juice-dataset.html#cb19-2" tabindex="-1"></a><span class="fu">plot</span>(Model_poly4, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="exercise-1-orange-juice-dataset.html#cb20-1" aria-hidden="true" tabindex="-1"></a>Model_poly5 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">5</span>, <span class="at">cost=</span><span class="dv">10</span>)</span>
-<span id="cb20-2"><a href="exercise-1-orange-juice-dataset.html#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_poly5, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="exercise-1-orange-juice-dataset.html#cb20-1" tabindex="-1"></a>Model_poly5 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">degree=</span><span class="dv">5</span>, <span class="at">cost=</span><span class="dv">10</span>)</span>
+<span id="cb20-2"><a href="exercise-1-orange-juice-dataset.html#cb20-2" tabindex="-1"></a><span class="fu">plot</span>(Model_poly5, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
 </div>
 <!-- Note that in `e1071` package, SVM is formulated using the dual optimisation problem (see the supplementary material on page 6 of Week 5 note). A consequence of this is that the cost parameter in `R` takes the opposite effect to the cost parameter $C$ taught in the lecture (i.e. the penalty assigned to slack variables). In other words, a small value of cost parameter in `R` corresponds to a large value of $C$ in the lecture note, and vice versa. We can check this by comparing the classification accuracy of SVMs built with different cost parameters. Intuitively, a large $C$ (i.e. a small cost in `R`) encourages the model to better fit the data and hence improve the accuracy, and this is indeed the case as shown in the `R` command below.  -->
@@ -1794,11 +1799,11 @@ Solution
 <button>
 Solution
 </button>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="exercise-1-orange-juice-dataset.html#cb21-1" aria-hidden="true" tabindex="-1"></a>Model_RBF <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">gamma=</span><span class="fl">0.1</span>)</span>
-<span id="cb21-2"><a href="exercise-1-orange-juice-dataset.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_RBF, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="exercise-1-orange-juice-dataset.html#cb21-1" tabindex="-1"></a>Model_RBF <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">gamma=</span><span class="fl">0.1</span>)</span>
+<span id="cb21-2"><a href="exercise-1-orange-juice-dataset.html#cb21-2" tabindex="-1"></a><span class="fu">plot</span>(Model_RBF, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="exercise-1-orange-juice-dataset.html#cb22-1" aria-hidden="true" tabindex="-1"></a>Model_RBF2 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">gamma=</span><span class="dv">10</span>)</span>
-<span id="cb22-2"><a href="exercise-1-orange-juice-dataset.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model_RBF2, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="exercise-1-orange-juice-dataset.html#cb22-1" tabindex="-1"></a>Model_RBF2 <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">gamma=</span><span class="dv">10</span>)</span>
+<span id="cb22-2"><a href="exercise-1-orange-juice-dataset.html#cb22-2" tabindex="-1"></a><span class="fu">plot</span>(Model_RBF2, OJ, ListPriceDiff<span class="sc">~</span>PriceDiff)</span></code></pre></div>
 <p><img src="main_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
 </div>
 </div>
@@ -1813,21 +1818,21 @@ Solution
 <button>
 Solution
 </button>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="exercise-1-orange-juice-dataset.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb23-2"><a href="exercise-1-orange-juice-dataset.html#cb23-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(OJ)</span>
-<span id="cb23-3"><a href="exercise-1-orange-juice-dataset.html#cb23-3" aria-hidden="true" tabindex="-1"></a>train.idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(n, <span class="fu">round</span>(n<span class="sc">*</span><span class="fl">0.75</span>))</span>
-<span id="cb23-4"><a href="exercise-1-orange-juice-dataset.html#cb23-4" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> OJ[train.idx,]</span>
-<span id="cb23-5"><a href="exercise-1-orange-juice-dataset.html#cb23-5" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> OJ[<span class="sc">-</span>train.idx,]</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="exercise-1-orange-juice-dataset.html#cb23-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb23-2"><a href="exercise-1-orange-juice-dataset.html#cb23-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(OJ)</span>
+<span id="cb23-3"><a href="exercise-1-orange-juice-dataset.html#cb23-3" tabindex="-1"></a>train.idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(n, <span class="fu">round</span>(n<span class="sc">*</span><span class="fl">0.75</span>))</span>
+<span id="cb23-4"><a href="exercise-1-orange-juice-dataset.html#cb23-4" tabindex="-1"></a>train <span class="ot">&lt;-</span> OJ[train.idx,]</span>
+<span id="cb23-5"><a href="exercise-1-orange-juice-dataset.html#cb23-5" tabindex="-1"></a>test <span class="ot">&lt;-</span> OJ[<span class="sc">-</span>train.idx,]</span></code></pre></div>
 </div>
 <p><br></p>
 <p>SVM is scale-invariant and therefore it is important to standardise the data first; here, standardisation is only applied to numerical variables.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="exercise-1-orange-juice-dataset.html#cb24-1" aria-hidden="true" tabindex="-1"></a>numerical_vars <span class="ot">&lt;-</span> <span class="fu">sapply</span>(OJ,is.numeric) <span class="co">#identify numerical variables</span></span>
-<span id="cb24-2"><a href="exercise-1-orange-juice-dataset.html#cb24-2" aria-hidden="true" tabindex="-1"></a>var.mean <span class="ot">&lt;-</span> <span class="fu">apply</span>(train[,numerical_vars],<span class="dv">2</span>,mean) </span>
-<span id="cb24-3"><a href="exercise-1-orange-juice-dataset.html#cb24-3" aria-hidden="true" tabindex="-1"></a>var.sd   <span class="ot">&lt;-</span> <span class="fu">apply</span>(train[,numerical_vars],<span class="dv">2</span>,sd)</span>
-<span id="cb24-4"><a href="exercise-1-orange-juice-dataset.html#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="exercise-1-orange-juice-dataset.html#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># standardise training and test sets</span></span>
-<span id="cb24-6"><a href="exercise-1-orange-juice-dataset.html#cb24-6" aria-hidden="true" tabindex="-1"></a>train[,numerical_vars] <span class="ot">&lt;-</span><span class="fu">t</span>(<span class="fu">apply</span>(train[,numerical_vars], <span class="dv">1</span>, <span class="cf">function</span>(x) (x<span class="sc">-</span>var.mean)<span class="sc">/</span>var.sd))</span>
-<span id="cb24-7"><a href="exercise-1-orange-juice-dataset.html#cb24-7" aria-hidden="true" tabindex="-1"></a>test[,numerical_vars] <span class="ot">&lt;-</span><span class="fu">t</span>(<span class="fu">apply</span>(test[,numerical_vars], <span class="dv">1</span>, <span class="cf">function</span>(x) (x<span class="sc">-</span>var.mean)<span class="sc">/</span>var.sd))</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="exercise-1-orange-juice-dataset.html#cb24-1" tabindex="-1"></a>numerical_vars <span class="ot">&lt;-</span> <span class="fu">sapply</span>(OJ,is.numeric) <span class="co">#identify numerical variables</span></span>
+<span id="cb24-2"><a href="exercise-1-orange-juice-dataset.html#cb24-2" tabindex="-1"></a>var.mean <span class="ot">&lt;-</span> <span class="fu">apply</span>(train[,numerical_vars],<span class="dv">2</span>,mean) </span>
+<span id="cb24-3"><a href="exercise-1-orange-juice-dataset.html#cb24-3" tabindex="-1"></a>var.sd   <span class="ot">&lt;-</span> <span class="fu">apply</span>(train[,numerical_vars],<span class="dv">2</span>,sd)</span>
+<span id="cb24-4"><a href="exercise-1-orange-juice-dataset.html#cb24-4" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="exercise-1-orange-juice-dataset.html#cb24-5" tabindex="-1"></a><span class="co"># standardise training and test sets</span></span>
+<span id="cb24-6"><a href="exercise-1-orange-juice-dataset.html#cb24-6" tabindex="-1"></a>train[,numerical_vars] <span class="ot">&lt;-</span><span class="fu">t</span>(<span class="fu">apply</span>(train[,numerical_vars], <span class="dv">1</span>, <span class="cf">function</span>(x) (x<span class="sc">-</span>var.mean)<span class="sc">/</span>var.sd))</span>
+<span id="cb24-7"><a href="exercise-1-orange-juice-dataset.html#cb24-7" tabindex="-1"></a>test[,numerical_vars] <span class="ot">&lt;-</span><span class="fu">t</span>(<span class="fu">apply</span>(test[,numerical_vars], <span class="dv">1</span>, <span class="cf">function</span>(x) (x<span class="sc">-</span>var.mean)<span class="sc">/</span>var.sd))</span></code></pre></div>
 <p>Our initial exploratory analysis suggests that it is unlikely to separate the class by using a linear decision boundary. Therefore, we focus on polynomial kernel and RBF kernel for our subsequent analysis.</p>
 <ol start="9" style="list-style-type: decimal">
 <li>Use <code>tune</code> or <code>tune.svm</code> to select the optimal combinations of <code>cost</code> and <code>degree</code> for polynomial kernel and <code>cost</code> and <code>gamma</code> for the RBF kernel.</li>
@@ -1836,12 +1841,12 @@ Solution
 <button>
 Solution
 </button>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="exercise-1-orange-juice-dataset.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb25-2"><a href="exercise-1-orange-juice-dataset.html#cb25-2" aria-hidden="true" tabindex="-1"></a>cost_range <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.01</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">10</span>,<span class="dv">100</span>)</span>
-<span id="cb25-3"><a href="exercise-1-orange-juice-dataset.html#cb25-3" aria-hidden="true" tabindex="-1"></a>degree_range <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span></span>
-<span id="cb25-4"><a href="exercise-1-orange-juice-dataset.html#cb25-4" aria-hidden="true" tabindex="-1"></a>gamma_range <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.001</span>,<span class="fl">0.01</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">10</span>,<span class="dv">100</span>)</span>
-<span id="cb25-5"><a href="exercise-1-orange-juice-dataset.html#cb25-5" aria-hidden="true" tabindex="-1"></a>SVM_poly <span class="ot">&lt;-</span> <span class="fu">tune.svm</span>(Purchase<span class="sc">~</span>., <span class="at">data=</span>train, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">cost=</span>cost_range, <span class="at">degree=</span>degree_range)</span>
-<span id="cb25-6"><a href="exercise-1-orange-juice-dataset.html#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(SVM_poly)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="exercise-1-orange-juice-dataset.html#cb25-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb25-2"><a href="exercise-1-orange-juice-dataset.html#cb25-2" tabindex="-1"></a>cost_range <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.01</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">10</span>,<span class="dv">100</span>)</span>
+<span id="cb25-3"><a href="exercise-1-orange-juice-dataset.html#cb25-3" tabindex="-1"></a>degree_range <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb25-4"><a href="exercise-1-orange-juice-dataset.html#cb25-4" tabindex="-1"></a>gamma_range <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.001</span>,<span class="fl">0.01</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">10</span>,<span class="dv">100</span>)</span>
+<span id="cb25-5"><a href="exercise-1-orange-juice-dataset.html#cb25-5" tabindex="-1"></a>SVM_poly <span class="ot">&lt;-</span> <span class="fu">tune.svm</span>(Purchase<span class="sc">~</span>., <span class="at">data=</span>train, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;polynomial&quot;</span>, <span class="at">cost=</span>cost_range, <span class="at">degree=</span>degree_range)</span>
+<span id="cb25-6"><a href="exercise-1-orange-juice-dataset.html#cb25-6" tabindex="-1"></a><span class="fu">summary</span>(SVM_poly)</span></code></pre></div>
 <pre><code>## 
 ## Parameter tuning of &#39;svm&#39;:
 ## 
@@ -1875,8 +1880,8 @@ Solution
 ## 18      3 1e+02 0.1895988 0.03886508
 ## 19      4 1e+02 0.2119599 0.03426569
 ## 20      5 1e+02 0.2157099 0.03719672</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="exercise-1-orange-juice-dataset.html#cb27-1" aria-hidden="true" tabindex="-1"></a>SVM_RBF <span class="ot">&lt;-</span> <span class="fu">tune.svm</span>(Purchase<span class="sc">~</span>., <span class="at">data=</span>train, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">cost=</span>cost_range, <span class="at">gamma=</span>gamma_range)</span>
-<span id="cb27-2"><a href="exercise-1-orange-juice-dataset.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(SVM_RBF)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="exercise-1-orange-juice-dataset.html#cb27-1" tabindex="-1"></a>SVM_RBF <span class="ot">&lt;-</span> <span class="fu">tune.svm</span>(Purchase<span class="sc">~</span>., <span class="at">data=</span>train, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">cost=</span>cost_range, <span class="at">gamma=</span>gamma_range)</span>
+<span id="cb27-2"><a href="exercise-1-orange-juice-dataset.html#cb27-2" tabindex="-1"></a><span class="fu">summary</span>(SVM_RBF)</span></code></pre></div>
 <pre><code>## 
 ## Parameter tuning of &#39;svm&#39;:
 ## 
@@ -1931,15 +1936,16 @@ Solution
 <button>
 Solution
 </button>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="exercise-1-orange-juice-dataset.html#cb29-1" aria-hidden="true" tabindex="-1"></a>gamma.opt <span class="ot">&lt;-</span> SVM_RBF<span class="sc">$</span>best.parameters[<span class="dv">1</span>]</span>
-<span id="cb29-2"><a href="exercise-1-orange-juice-dataset.html#cb29-2" aria-hidden="true" tabindex="-1"></a>cost.opt <span class="ot">&lt;-</span> SVM_RBF<span class="sc">$</span>best.parameters[<span class="dv">2</span>]</span>
-<span id="cb29-3"><a href="exercise-1-orange-juice-dataset.html#cb29-3" aria-hidden="true" tabindex="-1"></a>SVM_final <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">gamma=</span>gamma.opt, <span class="at">cost=</span>cost.opt)</span>
-<span id="cb29-4"><a href="exercise-1-orange-juice-dataset.html#cb29-4" aria-hidden="true" tabindex="-1"></a>test.pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(SVM_final,test)</span>
-<span id="cb29-5"><a href="exercise-1-orange-juice-dataset.html#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(test<span class="sc">$</span>Purchase,test.pred)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="exercise-1-orange-juice-dataset.html#cb29-1" tabindex="-1"></a>gamma.opt <span class="ot">&lt;-</span> SVM_RBF<span class="sc">$</span>best.parameters[<span class="dv">1</span>]</span>
+<span id="cb29-2"><a href="exercise-1-orange-juice-dataset.html#cb29-2" tabindex="-1"></a>cost.opt <span class="ot">&lt;-</span> SVM_RBF<span class="sc">$</span>best.parameters[<span class="dv">2</span>]</span>
+<span id="cb29-3"><a href="exercise-1-orange-juice-dataset.html#cb29-3" tabindex="-1"></a>SVM_final <span class="ot">&lt;-</span> <span class="fu">svm</span>(Purchase<span class="sc">~</span>PriceDiff<span class="sc">+</span>ListPriceDiff, OJ, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;radial&quot;</span>, <span class="at">gamma=</span>gamma.opt, <span class="at">cost=</span>cost.opt)</span>
+<span id="cb29-4"><a href="exercise-1-orange-juice-dataset.html#cb29-4" tabindex="-1"></a>test.pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(SVM_final,test)</span>
+<span id="cb29-5"><a href="exercise-1-orange-juice-dataset.html#cb29-5" tabindex="-1"></a><span class="fu">table</span>(test<span class="sc">$</span>Purchase,test.pred)</span></code></pre></div>
 <pre><code>##     test.pred
 ##       CH  MM
 ##   CH 123  43
 ##   MM  56  46</code></pre>
+<p>Based on the cross-tabulation table, we can calculate various evaluation measures, such as class-specific correct classification rate, specificity and sensitivity, AUC. Recall that this dataset is slightly imbalanced, and therefore, it is not very appropriate to comment on accuracy only.</p>
 </div>
 
 </div>

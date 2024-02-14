@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>STATS5099 Data Mining and Machine Learning</title>
   <meta name="description" content="STATS5099 Data Mining and Machine Learning" />
-  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
   <meta property="og:title" content="STATS5099 Data Mining and Machine Learning" />
   <meta property="og:type" content="book" />
@@ -117,6 +117,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 <link rel="stylesheet" href="include/webex.css" type="text/css" />
@@ -169,15 +173,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">1.1</span> Support vector machines<a href="index.html#support-vector-machines" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Before applying SVM, we need to take two important practical considerations into account. First, SVM, by design, is only applicable to binary-class classification problem. For multi-class problem, conversion to binary-class is essential by using either one versus one approach or one versus all approach. Secondly, SVM is not scale-invariant and therefore it is important to standardise the data as a pre-processing step.</p>
 <p>SVM can be fitted by using the <code>svm</code> command from <code>e1071</code> package. An example is as follows.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a>Model <span class="ot">&lt;-</span> <span class="fu">svm</span>(Y<span class="sc">~</span>., data, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;linear&quot;</span>, <span class="at">cost=</span><span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a>Model <span class="ot">&lt;-</span> <span class="fu">svm</span>(Y<span class="sc">~</span>., data, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;linear&quot;</span>, <span class="at">cost=</span><span class="dv">1</span>)</span></code></pre></div>
 <p>Important arguments include <code>type="C-classification"</code> for specifying the task is a classification problem, <code>kernel</code> for specifying the kernel function in SVM, e.g. <code>linear</code>, <code>polynomial</code> and <code>radial</code> (for radial basis kernel), <code>cost</code> for specifying the cost parameter in case of a soft-margin SVM, and any additional parameters used in the kernel function. See the help page for more information.</p>
 <p>To tune parameters in kernel functions, we could use either <code>tune.svm</code> or <code>tune</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a>cost_range <span class="ot">&lt;-</span> ... <span class="co">#specifying the range of parameters</span></span>
-<span id="cb2-2"><a href="index.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tune.svm</span>(Y<span class="sc">~</span>., <span class="at">data=</span>..., <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;linear&quot;</span>, <span class="at">cost=</span>cost_range)</span>
-<span id="cb2-3"><a href="index.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tune</span>(svm, Y<span class="sc">~</span>., data, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;linear&quot;</span>, <span class="at">ranges=</span><span class="fu">list</span>(<span class="at">cost=</span>cost_range))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" tabindex="-1"></a>cost_range <span class="ot">&lt;-</span> ... <span class="co">#specifying the range of parameters</span></span>
+<span id="cb2-2"><a href="index.html#cb2-2" tabindex="-1"></a><span class="fu">tune.svm</span>(Y<span class="sc">~</span>., <span class="at">data=</span>..., <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;linear&quot;</span>, <span class="at">cost=</span>cost_range)</span>
+<span id="cb2-3"><a href="index.html#cb2-3" tabindex="-1"></a><span class="fu">tune</span>(svm, Y<span class="sc">~</span>., data, <span class="at">type=</span><span class="st">&quot;C-classification&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;linear&quot;</span>, <span class="at">ranges=</span><span class="fu">list</span>(<span class="at">cost=</span>cost_range))</span></code></pre></div>
 <p>Once the classifier is built, we could use <code>predict()</code> to predict the class for future observations and <code>plot()</code> to visualise the decision boundary in 2D.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(Model, data)</span>
-<span id="cb3-2"><a href="index.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Model, data, formula) <span class="co">#formula: specifying two dimensions for visualisation, e.g. variable A ~ variable B</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" tabindex="-1"></a><span class="fu">predict</span>(Model, data)</span>
+<span id="cb3-2"><a href="index.html#cb3-2" tabindex="-1"></a><span class="fu">plot</span>(Model, data, formula) <span class="co">#formula: specifying two dimensions for visualisation, e.g. variable A ~ variable B</span></span></code></pre></div>
 
 </div>
 </div>
